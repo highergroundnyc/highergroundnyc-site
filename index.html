@@ -69,6 +69,7 @@
     font-family: var(--ff); font-size: 17px; color: var(--black);
     background: var(--white); border: none; cursor: pointer;
     padding: 9px 20px; transition: opacity 0.2s;
+    text-decoration: none; display: inline-block; line-height: 1.2;
   }
   .book-btn:hover { opacity: 0.82; }
   .nav-burger {
@@ -90,6 +91,10 @@
     background: none; border: none; cursor: pointer; line-height: 1;
   }
   .menu a { font-size: 34px; color: var(--white); text-decoration: none; }
+  .menu a.menu-book {
+    background: var(--white); color: var(--black);
+    padding: 12px 34px; margin-top: 8px;
+  }
 
   /* ══ HERO ══ */
   .hero {
@@ -304,6 +309,25 @@
 
   /* ══ CONTACT ══ */
   .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .book-cta {
+    display: inline-block; font-weight: 700;
+    font-size: clamp(20px, 2.2vw, 26px);
+    background: var(--black); color: var(--white);
+    text-decoration: none; padding: 18px 38px; line-height: 1.2;
+    transition: opacity 0.2s;
+  }
+  .book-cta:hover { opacity: 0.82; }
+  .book-cta-note { font-size: 17px; color: var(--black); margin-top: 14px; }
+
+  .or-rule {
+    display: flex; align-items: center; gap: 18px;
+    margin: 2.4rem 0; max-width: 420px;
+  }
+  .or-rule::before, .or-rule::after {
+    content: ''; flex: 1; height: 1px; background: var(--black);
+  }
+  .or-rule span { font-size: 17px; color: var(--black); }
+
   .dm {
     display: inline-block; font-weight: 700;
     font-size: clamp(26px, 3.6vw, 42px); color: var(--black);
@@ -370,7 +394,7 @@
     #shop, #shop .h2, #shop .copy, #shop .kicker,
   #shop .shop-name, #shop .shop-note, #shop .shop-link,
   #contact, #contact .h2, #contact .copy, #contact .kicker,
-  #contact .dm, #contact .dm-note, #contact .info-key,
+  #contact .dm, #contact .dm-note, #contact .info-key, #contact .book-cta-note, #contact .or-rule span,
   #contact .info-val, #contact .info-val a, #contact .info-sub,
   #notices, #notices *,
   #contact .map-link, #contact .map-fallback, #contact .map-fallback * {
@@ -436,7 +460,7 @@
     <a href="#shop">Shop</a>
     <a href="#contact">Contact</a>
   </div>
-  <button class="book-btn" onclick="goContact()">Book</button>
+  <a class="book-btn" data-studio="booking" href="#" target="_blank" rel="noopener">Book</a>
   <button class="nav-burger" onclick="openMenu()">Menu</button>
 </nav>
 
@@ -447,6 +471,7 @@
   <a href="#artists" onclick="closeMenu()">Artists</a>
   <a href="#shop" onclick="closeMenu()">Shop</a>
   <a href="#contact" onclick="closeMenu()">Contact</a>
+  <a class="menu-book" data-studio="booking" href="#" target="_blank" rel="noopener" onclick="closeMenu()">Book</a>
 </div>
 
 <!-- ══ HERO ══ -->
@@ -559,6 +584,11 @@
       <div>
         <h2 class="h2">Start with your tattoo idea.</h2>
         <p class="copy" style="margin-bottom:2.6rem">Send us your tattoo idea, placement, approximate size, and any reference images.<br>We'll connect you with the right artist and get back to you with availability.</p>
+
+        <a class="book-cta" data-studio="booking" href="#" target="_blank" rel="noopener">Book a consultation</a>
+        <div class="book-cta-note">Tell us your idea through a short form.</div>
+
+        <div class="or-rule"><span>or</span></div>
 
         <a class="dm" data-studio="instagram" href="https://instagram.com/higher_ground_nyc" target="_blank" rel="noopener">@higher_ground_nyc</a>
         <div class="dm-note">Follow us on Instagram for recent work and studio updates.</div>
@@ -751,6 +781,10 @@ function applyStudio() {
     if (el.tagName === 'A') el.href = STUDIO.instagram_url;
   });
   set('[data-studio="instagram-link"]', function(el){ el.href = STUDIO.instagram_url; });
+  set('[data-studio="booking"]', function(el){
+    if (STUDIO.booking_url) { el.href = STUDIO.booking_url; }
+    else { el.style.display = 'none'; }   // no link set → hide the button
+  });
   set('[data-studio="email"]', function(el){
     el.textContent = STUDIO.email; el.href = 'mailto:' + STUDIO.email;
   });
