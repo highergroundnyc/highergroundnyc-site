@@ -98,6 +98,11 @@ collections:
         fields:
           - { name: instagram_handle, label: "Studio Instagram handle", widget: string }
           - { name: instagram_url,    label: "Studio Instagram link",   widget: string }
+          - name: booking_url
+            label: "Booking form link"
+            widget: string
+            required: false
+            hint: "Where the Book button goes — e.g. your Typeform link. Leave empty to hide the Book button."
           - { name: email,            label: "Email",                   widget: string }
           - { name: address_line1,    label: "Address line 1",          widget: string }
           - { name: address_line2,    label: "Address line 2",          widget: string }
