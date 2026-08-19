@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HIGHER GROUND NYC — Tattoo Studio in Midtown Manhattan</title>
+<meta name="color-scheme" content="only light">
+<meta name="supported-color-schemes" content="light">
+<meta name="description" content="Professional tattoo studio in Midtown Manhattan, New York City. Fine line, black &amp; grey, illustrative, blackwork, lettering, and custom designs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { color-scheme: only light; }
+
+  :root {
+    color-scheme: only light;
+    --black: #000000;
+    --white: #FFFFFF;
+    --ff: 'Playfair Display', serif;
+
+    --t-body: clamp(18px, 1.4vw, 21px);
+    --t-lead: clamp(20px, 1.8vw, 24px);
+    --t-h2:   clamp(34px, 4.8vw, 58px);
+    --t-h3:   clamp(23px, 2.2vw, 30px);
+  }
+
+  html { scroll-behavior: smooth; background: #FFFFFF; }
+  body {
+    font-family: var(--ff); font-weight: 400;
+    background: var(--white); color: var(--black);
+    font-size: var(--t-body); line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+  body.no-scroll { overflow: hidden; }
+  :focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  .hidden { display: none !important; }
+
+  /* ══ NAV — solid bar, no blend mode ══ */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2.5rem; height: 76px;
+    background: var(--black);
+    border-bottom: 1px solid rgba(255,255,255,0.25);
+  }
+  .nav-logo {
+    font-weight: 700; font-size: 16px; color: var(--white);
+    letter-spacing: 0.18em; white-space: nowrap; text-decoration: none; line-height: 1;
+  }
+  .nav-links { display: flex; gap: 38px; align-items: baseline; }
+  .nav-links a {
+    font-size: 17px; color: var(--white); text-decoration: none;
+    padding-bottom: 4px; border-bottom: 1px solid transparent; transition: border-color 0.2s;
+  }
+  .nav-links a:hover { border-bottom-color: var(--white); }
+  .book-btn {
+    font-family: var(--ff); font-size: 17px; color: var(--black);
+    background: var(--white); border: none; cursor: pointer;
+    padding: 9px 20px; transition: opacity 0.2s;
+  }
+  .book-btn:hover { opacity: 0.82; }
+  .nav-burger {
+    display: none; font-family: var(--ff); font-size: 17px;
+    color: var(--white); background: none; border: none; cursor: pointer;
+    padding: 0 0 4px; border-bottom: 1px solid var(--white);
+  }
+
+  /* ══ MOBILE MENU ══ */
+  .menu {
+    position: fixed; inset: 0; z-index: 200; background: var(--black);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 42px; opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+  }
+  .menu.open { opacity: 1; pointer-events: auto; }
+  .menu-close {
+    position: absolute; top: 20px; right: 26px;
+    font-family: var(--ff); font-size: 36px; color: var(--white);
+    background: none; border: none; cursor: pointer; line-height: 1;
+  }
+  .menu a { font-size: 34px; color: var(--white); text-decoration: none; }
+
+  /* ══ HERO ══ */
+  .hero {
+    position: relative; height: 100vh; min-height: 600px;
+    background: var(--black); overflow: hidden;
+  }
+  .video-stage { position: absolute; inset: 0; }
+  .video-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.4s ease; }
+  .video-slide.active { opacity: 1; }
+  .video-slide video {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    filter: grayscale(100%) brightness(0.55);
+  }
+  /* heavy scrim so white type always reads */
+  .video-scrim { position: absolute; inset: 0; z-index: 2; background: rgba(0,0,0,0.62); }
+
+  .hero-center {
+    position: absolute; inset: 0; z-index: 3;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 2rem;
+  }
+  .hero-welcome {
+    font-size: clamp(14px, 1.4vw, 17px); letter-spacing: 0.4em;
+    color: var(--white); margin-bottom: 28px; line-height: 1;
+  }
+  .hero-logo {
+    font-weight: 700; font-size: clamp(28px, 5.2vw, 64px);
+    color: var(--white); letter-spacing: 0.12em; line-height: 1.1; white-space: nowrap;
+  }
+  .hero-rule { height: 2px; background: var(--white); }
+  .hero-sub {
+    font-size: clamp(19px, 2vw, 26px); line-height: 1.55;
+    color: var(--white); max-width: 20ch;
+  }
+  .hero-est { font-size: 14px; letter-spacing: 0.4em; color: var(--white); }
+
+  @keyframes riseIn { from { opacity:0; transform: translateY(14px); } to { opacity:1; transform: translateY(0); } }
+  .r1 { opacity:0; animation: riseIn 0.9s ease 0.2s  forwards; }
+  .r2 { opacity:0; animation: riseIn 1s   ease 0.45s forwards; }
+  .r3 { opacity:0; animation: riseIn 0.9s ease 0.9s  forwards; }
+  .r4 { opacity:0; animation: riseIn 0.9s ease 1.2s  forwards; }
+  .r5 { opacity:0; animation: riseIn 0.9s ease 1.5s  forwards; }
+
+  .video-dots { position: absolute; bottom: 2.2rem; left: 50%; transform: translateX(-50%); z-index: 4; display: flex; gap: 10px; }
+  .video-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: none; border: 1px solid var(--white); padding: 0;
+    cursor: pointer; transition: all 0.3s ease;
+  }
+  .video-dot.on { background: var(--white); width: 24px; border-radius: 4px; }
+
+  /* ══ SECTION SHELL ══ */
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 2.5rem; }
+  .band { padding: 7rem 0; }
+  .band-dark { background: var(--black); color: var(--white); }
+
+  .kicker {
+    font-size: clamp(17px, 1.5vw, 20px); letter-spacing: 0.3em; font-weight: 500;
+    color: var(--black); margin-bottom: 2rem; line-height: 1;
+  }
+  .band-dark .kicker { color: var(--white); }
+
+  .h2 {
+    font-weight: 700; font-size: var(--t-h2); line-height: 1.14;
+    margin-bottom: 2.2rem; color: var(--black);
+  }
+  .band-dark .h2 { color: var(--white); }
+
+  .h3 { font-weight: 700; font-size: var(--t-h3); line-height: 1.3; margin-bottom: 1.3rem; color: var(--black); }
+
+  .copy { font-size: var(--t-lead); font-weight: 500; line-height: 1.85; color: var(--black); max-width: 62ch; }
+  .copy + .copy { margin-top: 1.5rem; }
+  .band-dark .copy { color: var(--white); }
+
+  .block { padding-top: 3.5rem; margin-top: 3.5rem; border-top: 2px solid var(--black); }
+
+  .closer {
+    font-weight: 700; font-size: clamp(26px, 3.4vw, 42px);
+    line-height: 1.35; margin-top: 3.5rem; max-width: 20ch; color: var(--black);
+  }
+
+
+
+  /* ══ ANNOUNCEMENTS ══ */
+  .notice { padding: 2rem 0; border-top: 2px solid var(--black); }
+  .notice:last-child { border-bottom: 2px solid var(--black); }
+  .notice-date { font-size: 16px; font-weight: 700; letter-spacing: 0.14em; color: var(--black); margin-bottom: 10px; }
+  .notice-title { font-weight: 700; font-size: var(--t-h3); color: var(--black); margin-bottom: 10px; }
+  .notice-body { font-size: var(--t-body); color: var(--black); line-height: 1.8; max-width: 62ch; }
+
+  /* ══ ARTISTS ══ */
+  .artists-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 2rem; flex-wrap: wrap; margin-bottom: 3rem; }
+  .artists-head .h2 { margin-bottom: 0; }
+  .toggle { display: flex; align-items: baseline; gap: 20px; }
+  .toggle-btn {
+    font-family: var(--ff); font-size: 18px; color: var(--white);
+    background: none; border: none; cursor: pointer;
+    padding: 0 0 6px; border-bottom: 2px solid transparent;
+    transition: border-color 0.2s; white-space: nowrap;
+  }
+  .toggle-btn.on { border-bottom-color: var(--white); }
+  .toggle-sep { font-size: 18px; color: var(--white); }
+
+  .artist-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 2.8rem 1.8rem; }
+  .artist-card { display: flex; flex-direction: column; }
+  .artist-open {
+    background: none; border: none; padding: 0; margin: 0;
+    text-align: left; cursor: pointer; font-family: var(--ff);
+    display: block; width: 100%;
+  }
+  .artist-photo {
+    aspect-ratio: 3/4; margin-bottom: 1.1rem;
+    background: #262626; background-size: cover; background-position: center;
+    filter: grayscale(100%); transition: opacity 0.3s;
+    display: flex; align-items: flex-end; padding: 18px;
+    border: 1px solid rgba(255,255,255,0.3);
+  }
+  .artist-open:hover .artist-photo { opacity: 0.75; }
+  .photo-mark { font-size: 26px; color: var(--white); }
+  .artist-name { font-weight: 700; font-size: 23px; color: var(--white); margin-bottom: 7px; }
+  .artist-style { font-size: 16px; color: var(--white); line-height: 1.6; }
+  .artist-handles { display: flex; flex-direction: column; gap: 4px; margin-top: 10px; }
+  .artist-handles a {
+    font-size: 16px; color: var(--white); text-decoration: none;
+    align-self: flex-start; padding-bottom: 2px;
+    border-bottom: 1px solid var(--white);
+  }
+  .artist-handles a:hover { opacity: 0.7; }
+
+  .filters { display: flex; gap: 26px; flex-wrap: wrap; margin-bottom: 2.6rem; }
+  .filter-btn {
+    font-family: var(--ff); font-size: 17px; color: var(--white);
+    background: none; border: none; cursor: pointer;
+    padding: 0 0 6px; border-bottom: 2px solid transparent;
+    transition: border-color 0.2s; white-space: nowrap;
+  }
+  .filter-btn.on { border-bottom-color: var(--white); }
+
+  .work-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 1.1rem; }
+  .work-tile {
+    aspect-ratio: 1/1; background: #262626;
+    background-size: cover; background-position: center;
+    position: relative; cursor: pointer; transition: opacity 0.3s;
+    border: 1px solid rgba(255,255,255,0.3);
+  }
+  .work-tile:hover { opacity: 0.78; }
+  .work-tile span {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    padding: 10px 14px; background: rgba(0,0,0,0.75);
+    font-size: 15px; color: var(--white);
+  }
+  .empty { font-size: var(--t-body); color: var(--white); padding: 2rem 0; }
+
+  /* ══ ARTIST DETAIL ══ */
+  .detail {
+    position: fixed; inset: 0; z-index: 300; background: var(--black); color: var(--white);
+    overflow-y: auto; opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+  }
+  .detail.open { opacity: 1; pointer-events: auto; }
+  .detail-close {
+    position: fixed; top: 24px; right: 30px; z-index: 310;
+    font-family: var(--ff); font-size: 17px; color: var(--black);
+    background: var(--white); border: none; cursor: pointer; padding: 8px 18px;
+  }
+  .detail-inner { max-width: 1040px; margin: 0 auto; padding: 7.5rem 2.5rem 6rem; }
+  .detail-top { display: grid; grid-template-columns: 290px 1fr; gap: 3.5rem; align-items: start; margin-bottom: 4.5rem; }
+  .detail-photo {
+    aspect-ratio: 3/4; background: #262626;
+    background-size: cover; background-position: center; filter: grayscale(100%);
+    border: 1px solid rgba(255,255,255,0.3);
+  }
+  .detail-name { font-weight: 700; font-size: clamp(40px, 6vw, 68px); line-height: 1.05; margin-bottom: 1.6rem; color: var(--white); }
+  .detail-bio { font-size: var(--t-lead); font-weight: 500; line-height: 1.85; color: var(--white); max-width: 58ch; margin-bottom: 2.8rem; }
+  .style-rows { display: flex; flex-direction: column; max-width: 500px; }
+  .style-row {
+    display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap;
+    padding: 18px 0; border-bottom: 1px solid rgba(255,255,255,0.4);
+  }
+  .style-row:first-child { border-top: 1px solid rgba(255,255,255,0.4); }
+  .style-tag { font-weight: 700; font-size: 17px; color: var(--white); }
+  .style-handle {
+    font-size: 17px; color: var(--white); text-decoration: none;
+    margin-left: auto; border-bottom: 1px solid var(--white); padding-bottom: 2px;
+  }
+  .detail-label { font-size: 14px; letter-spacing: 0.34em; color: var(--white); margin-bottom: 1.6rem; }
+  .rail { display: flex; gap: 1.1rem; overflow-x: auto; padding-bottom: 16px; scroll-snap-type: x mandatory; }
+  .rail::-webkit-scrollbar { height: 3px; }
+  .rail::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.4); }
+  .rail-tile {
+    flex: 0 0 260px; aspect-ratio: 3/4; background: #262626;
+    background-size: cover; background-position: center;
+    scroll-snap-align: start; position: relative;
+    border: 1px solid rgba(255,255,255,0.3);
+  }
+  .rail-tile span {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    padding: 10px 14px; background: rgba(0,0,0,0.75);
+    font-size: 15px; color: var(--white);
+  }
+
+  /* ══ SHOP ══ */
+  .shop-links { display: flex; flex-direction: column; margin-top: 2rem; }
+  .shop-link {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 1.5rem;
+    padding: 1.8rem 0; border-bottom: 1px solid var(--black);
+    text-decoration: none; color: var(--black); transition: padding-left 0.25s ease;
+  }
+  .shop-link:first-child { border-top: 1px solid var(--black); }
+  .shop-link:hover { padding-left: 14px; }
+  .shop-name { font-weight: 700; font-size: var(--t-h3); }
+  .shop-note { font-size: 16px; color: var(--black); }
+
+  /* ══ CONTACT ══ */
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .dm {
+    display: inline-block; font-weight: 700;
+    font-size: clamp(26px, 3.6vw, 42px); color: var(--black);
+    text-decoration: none; border-bottom: 3px solid var(--black);
+    padding-bottom: 8px; margin-bottom: 14px; line-height: 1.2;
+  }
+  .dm-note { font-size: 17px; color: var(--black); }
+  .info-rows { display: flex; flex-direction: column; gap: 1.9rem; margin-top: 3rem; }
+  .info-key {
+    font-size: 17px; font-weight: 700; letter-spacing: 0.2em;
+    color: var(--black); margin-bottom: 10px;
+  }
+  .info-val { font-size: var(--t-body); color: var(--black); line-height: 1.7; }
+  .info-val a { color: var(--black); text-decoration: none; border-bottom: 1px solid var(--black); }
+  .info-sub { font-size: 17px; color: var(--black); line-height: 1.7; margin-top: 8px; }
+  .map {
+    width: 100%; aspect-ratio: 1/1; border: 2px solid var(--black);
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+    filter: grayscale(100%) contrast(1.05);
+  }
+  .map iframe { width: 100%; height: 100%; border: 0; display: block; }
+  .map-fallback {
+    width: 100%; height: 100%; padding: 2rem;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center; gap: 10px;
+  }
+  .map-fallback .mf-name { font-weight: 700; font-size: var(--t-h3); color: var(--black); }
+  .map-fallback .mf-addr { font-size: 17px; color: var(--black); line-height: 1.7; }
+  .map-fallback .mf-note { font-size: 15px; color: var(--black); margin-top: 6px; }
+  .map-link {
+    display: inline-block; margin-top: 16px;
+    font-size: 17px; font-weight: 700; color: var(--black);
+    text-decoration: none; border-bottom: 2px solid var(--black); padding-bottom: 4px;
+  }
+
+  /* ══ FOOTER ══ */
+  footer { background: var(--black); color: var(--white); padding: 4rem 0 2.5rem; }
+  .foot-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 3rem; flex-wrap: wrap; padding-bottom: 2.5rem; border-bottom: 1px solid rgba(255,255,255,0.4); }
+  .foot-logo { font-weight: 700; font-size: 16px; letter-spacing: 0.18em; white-space: nowrap; margin-bottom: 10px; color: var(--white); }
+  .foot-tag { font-size: 15px; letter-spacing: 0.14em; color: var(--white); }
+  .foot-links { display: flex; gap: 2.5rem; flex-wrap: wrap; }
+  .foot-links a { font-size: 18px; color: var(--white); text-decoration: none; cursor: pointer; padding-bottom: 3px; border-bottom: 1px solid transparent; transition: border-color 0.2s; }
+  .foot-links a:hover { border-bottom-color: var(--white); }
+  .foot-bottom { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; padding-top: 2rem; }
+  .foot-copy { font-size: 15px; color: var(--white); }
+
+  /* ══════════════════════════════════════════════
+     DARK-MODE LOCK
+     Some in-app browsers (Instagram, Gmail, Chrome
+     auto-dark) repaint backgrounds when the device
+     is in dark mode, which leaves black text on a
+     dark field. Everything below re-asserts the
+     intended colours so the page never inverts.
+  ══════════════════════════════════════════════ */
+  html, body { background-color: #FFFFFF !important; }
+
+  .band, .wrap, .hero, footer, .detail, .menu, .nav { forced-color-adjust: none; }
+
+  /* light sections carry their own background */
+  #about, #shop, #contact, #notices { background-color: #FFFFFF; }
+
+  #about, #about .h2, #about .h3, #about .copy, #about .kicker,
+  #about .closer,
+    #shop, #shop .h2, #shop .copy, #shop .kicker,
+  #shop .shop-name, #shop .shop-note, #shop .shop-link,
+  #contact, #contact .h2, #contact .copy, #contact .kicker,
+  #contact .dm, #contact .dm-note, #contact .info-key,
+  #contact .info-val, #contact .info-val a, #contact .info-sub,
+  #notices, #notices *,
+  #contact .map-link, #contact .map-fallback, #contact .map-fallback * {
+    color: #000000 !important;
+    -webkit-text-fill-color: #000000;
+  }
+
+  .band-dark, .band-dark *, footer, footer *,
+  .detail, .detail *, .menu, .menu *, .nav, .nav a, .nav-logo, .nav-burger {
+    -webkit-text-fill-color: #FFFFFF;
+  }
+  .book-btn, .detail-close { -webkit-text-fill-color: #000000; }
+
+  .band-dark { background-color: #000000 !important; }
+  footer { background-color: #000000 !important; }
+  .nav { background-color: #000000 !important; }
+  .menu { background-color: #000000 !important; }
+  .detail { background-color: #000000 !important; }
+  .hero { background-color: #000000 !important; }
+  .book-btn { background-color: #FFFFFF !important; }
+  .detail-close { background-color: #FFFFFF !important; }
+
+  @media (prefers-color-scheme: dark) {
+    html, body { background-color: #FFFFFF !important; color: #000000 !important; }
+    #about, #shop, #contact { background-color: #FFFFFF !important; }
+    .band-dark, footer, .nav, .menu, .detail, .hero { background-color: #000000 !important; }
+  }
+
+  /* ══ RESPONSIVE ══ */
+  @media (max-width: 860px) {
+    .nav { padding: 0 1.4rem; height: 66px; }
+    .nav-links, .book-btn { display: none; }
+    .nav-burger { display: block; }
+
+    .wrap { padding: 0 1.4rem; }
+    .band { padding: 4.5rem 0; }
+    .hero { height: 88vh; }
+
+    .block { padding-top: 2.6rem; margin-top: 2.6rem; }
+    .artists-head { align-items: flex-start; gap: 1.4rem; }
+    .artist-grid { grid-template-columns: repeat(2, 1fr); gap: 2rem 1.1rem; }
+    .work-grid { grid-template-columns: repeat(2, 1fr); }
+
+    .detail-inner { padding: 6rem 1.4rem 4rem; }
+    .detail-top { grid-template-columns: 1fr; gap: 2rem; }
+    .detail-photo { max-width: 230px; }
+    .detail-close { top: 16px; right: 16px; }
+    .rail-tile { flex: 0 0 200px; }
+
+    .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .foot-links { gap: 1.6rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav class="nav">
+  <a class="nav-logo" href="#top">HIGHER GROUND NYC</a>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#artists">Artists</a>
+    <a href="#shop">Shop</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <button class="book-btn" onclick="goContact()">Book</button>
+  <button class="nav-burger" onclick="openMenu()">Menu</button>
+</nav>
+
+<!-- ══ MOBILE MENU ══ -->
+<div class="menu" id="menu">
+  <button class="menu-close" onclick="closeMenu()" aria-label="Close">×</button>
+  <a href="#about" onclick="closeMenu()">About</a>
+  <a href="#artists" onclick="closeMenu()">Artists</a>
+  <a href="#shop" onclick="closeMenu()">Shop</a>
+  <a href="#contact" onclick="closeMenu()">Contact</a>
+</div>
+
+<!-- ══ HERO ══ -->
+<section class="hero" id="top">
+  <div class="video-stage" id="stage">
+    <div class="video-slide active"><video autoplay muted loop playsinline><source src="AdobeStock_102452447_Video_HD_Preview.mov" type="video/mp4"></video></div>
+    <div class="video-slide"><video muted loop playsinline><source src="AdobeStock_102673737_Video_HD_Preview.mov" type="video/mp4"></video></div>
+    <div class="video-slide"><video muted loop playsinline><source src="AdobeStock_124853663_Video_HD_Preview.mov" type="video/mp4"></video></div>
+    <div class="video-slide"><video muted loop playsinline><source src="AdobeStock_197753906_Video_HD_Preview.mov" type="video/mp4"></video></div>
+    <div class="video-slide"><video muted loop playsinline><source src="AdobeStock_404680124_Video_HD_Preview.mov" type="video/mp4"></video></div>
+    <div class="video-slide"><video muted loop playsinline><source src="AdobeStock_643964994_Video_HD_Preview.mov" type="video/mp4"></video></div>
+  </div>
+  <div class="video-scrim"></div>
+
+  <div class="hero-center">
+    <span class="hero-welcome r1">WELCOME TO</span>
+    <span class="hero-logo r2">HIGHER GROUND NYC</span>
+    <span class="hero-rule r3" style="width:70px;margin:30px 0 26px"></span>
+    <p class="hero-sub r4">Tattoo Studio in Midtown<br>Manhattan, New York</p>
+    <span class="hero-est r5" style="margin-top:26px">EST. 2022</span>
+  </div>
+
+  <div class="video-dots" id="dots"></div>
+</section>
+
+<!-- ══ ABOUT ══ -->
+<section class="band" id="about">
+  <div class="wrap">
+    <div class="kicker">ABOUT</div>
+    <h2 class="h2">A tattoo studio in the heart of Midtown Manhattan.</h2>
+
+    <p class="copy">Higher Ground NYC is a professional tattoo studio welcoming both New Yorkers and visitors from around the world.</p>
+    <p class="copy">Just minutes from Times Square, Bryant Park, and Penn Station, our studio provides a clean, comfortable, and creative environment where clients work directly with experienced tattoo artists to bring their ideas to life.</p>
+
+
+    <div class="block">
+      <h3 class="h3">Artists &amp; Styles</h3>
+      <p class="copy">Our team of tattoo artists works across a variety of styles.</p>
+      <p class="copy" style="margin-top:2rem">Whether you're looking for a small tattoo to remember your time in New York, your first tattoo, or a larger custom piece, we'll help connect you with an artist whose work fits your idea and style.</p>
+      <p class="copy">Every tattoo begins with understanding what you want — the concept, placement, size, references, and the story behind it — so we can create a piece that feels personal to you.</p>
+    </div>
+
+    <div class="block">
+      <h3 class="h3">Custom Tattoos. Personal Experience.</h3>
+      <p class="copy">At Higher Ground NYC, we believe a great tattoo experience is about more than the final artwork.</p>
+      <p class="copy">From your first consultation through the tattoo session and aftercare, our goal is to make the process clear, comfortable, professional, and personal.</p>
+      <p class="copy">We welcome appointments, consultations, and walk-in inquiries, depending on artist availability. Whether you live in New York or you're visiting the city, you're always welcome at Higher Ground NYC.</p>
+      <p class="closer">Bring us your idea.<br>We'll help you take it further.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ANNOUNCEMENTS (shown only when there are any) ══ -->
+<section class="band hidden" id="notices">
+  <div class="wrap">
+    <div class="kicker">NEWS</div>
+    <div id="noticeList"></div>
+  </div>
+</section>
+
+<!-- ══ ARTISTS ══ -->
+<section class="band band-dark" id="artists">
+  <div class="wrap">
+    <div class="kicker">ARTISTS</div>
+    <div class="artists-head">
+      <h2 class="h2">Our Artists</h2>
+      <div class="toggle">
+        <button class="toggle-btn on" id="tabArtists" onclick="showArtists()">Artists</button>
+        <span class="toggle-sep">/</span>
+        <button class="toggle-btn" id="tabWork" onclick="showWork()">All Work</button>
+      </div>
+    </div>
+
+    <div class="artist-grid" id="artistGrid"></div>
+
+    <div id="workView" class="hidden">
+      <div class="filters" id="filters"></div>
+      <div class="work-grid" id="workGrid"></div>
+      <p class="empty hidden" id="workEmpty">No work in this style yet.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ARTIST DETAIL ══ -->
+<div class="detail" id="detail" role="dialog" aria-modal="true">
+  <button class="detail-close" onclick="closeDetail()">Close</button>
+  <div class="detail-inner" id="detailInner"></div>
+</div>
+
+<!-- ══ SHOP ══ -->
+<section class="band" id="shop">
+  <div class="wrap">
+    <div class="kicker">SHOP</div>
+    <h2 class="h2">Carry the art with you.</h2>
+    <p class="copy">Prints, apparel, and artist collaborations — made in limited runs.</p>
+    <div class="shop-links">
+      <a class="shop-link" href="#"><span class="shop-name">Art Prints</span><span class="shop-note">Limited run</span></a>
+      <a class="shop-link" href="#"><span class="shop-name">Apparel</span><span class="shop-note">Seasonal</span></a>
+      <a class="shop-link" href="#"><span class="shop-name">Flash Sheets</span><span class="shop-note">By artist</span></a>
+      <a class="shop-link" href="#"><span class="shop-name">Collab Drops</span><span class="shop-note">Announced on Instagram</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONTACT ══ -->
+<section class="band" id="contact" style="border-top:2px solid var(--black)">
+  <div class="wrap">
+    <div class="kicker">CONTACT</div>
+    <div class="contact-grid">
+      <div>
+        <h2 class="h2">Start with your tattoo idea.</h2>
+        <p class="copy" style="margin-bottom:2.6rem">Send us your tattoo idea, placement, approximate size, and any reference images.<br>We'll connect you with the right artist and get back to you with availability.</p>
+
+        <a class="dm" data-studio="instagram" href="https://instagram.com/highergroundnyc" target="_blank" rel="noopener">@highergroundnyc</a>
+        <div class="dm-note">Follow us on Instagram for recent work and studio updates.</div>
+
+        <div class="info-rows">
+          <div>
+            <div class="info-key">STUDIO</div>
+            <div class="info-val" data-studio="address">325 West 38th Street #703<br>New York, NY 10018</div>
+            <div class="info-sub" data-studio="address-note">Midtown Manhattan · Near Times Square &amp; Bryant Park</div>
+          </div>
+          <div>
+            <div class="info-key">HOURS</div>
+            <div class="info-val" data-studio="hours">12:30 PM &ndash; 7:30 PM</div>
+            <div class="info-sub" data-studio="hours-note">Appointments &amp; consultations available.<br>Walk-ins welcome, subject to artist availability.</div>
+          </div>
+          <div>
+            <div class="info-key">EMAIL</div>
+            <div class="info-val"><a data-studio="email" href="mailto:info.highergroundnyc@gmail.com">info.highergroundnyc@gmail.com</a></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="map" id="mapBox">
+        <iframe id="mapFrame"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.2998057379978!2d-73.99526532289899!3d40.75543027138727!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c2591876d3ff7b%3A0x838d22569a888bf2!2sHigher%20Ground%20NYC!5e0!3m2!1sen!2sus!4v1787176918293!5m2!1sen!2sus"
+          style="border:0;" allowfullscreen="" loading="lazy"
+          referrerpolicy="strict-origin-when-cross-origin"
+          title="Higher Ground NYC — 325 West 38th Street #703, New York, NY 10018"></iframe>
+      </div>
+      <a class="map-link" href="https://maps.app.goo.gl/?q=Higher+Ground+NYC+325+West+38th+Street+New+York"
+         target="_blank" rel="noopener">Open in Google Maps</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div>
+        <div class="foot-logo">HIGHER GROUND NYC</div>
+        <div class="foot-tag">MIDTOWN MANHATTAN · EST. 2022</div>
+      </div>
+      <div class="foot-links">
+        <a href="#about">About</a>
+        <a href="#artists">Artists</a>
+        <a href="#shop">Shop</a>
+        <a href="#contact">Contact</a>
+        <a data-studio="instagram-link" href="https://instagram.com/highergroundnyc" target="_blank" rel="noopener">Instagram</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <div class="foot-copy">© 2026 HIGHER GROUND NYC</div>
+      <div class="foot-copy">325 West 38th Street #703, New York, NY 10018</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ═══════════════════════════════════════════════
+   Content is loaded from /content/*.json so it can
+   be edited from the admin panel. Do not hard-code
+   artists or studio details in this file.
+═══════════════════════════════════════════════ */
+var ARTISTS = [];
+var STUDIO  = {};
+var NOTICES = [];
+
+function openMenu(){ document.getElementById('menu').classList.add('open'); document.body.classList.add('no-scroll'); }
+function closeMenu(){ document.getElementById('menu').classList.remove('open'); document.body.classList.remove('no-scroll'); }
+function goContact(){ document.getElementById('contact').scrollIntoView({behavior:'smooth'}); }
+
+function renderArtists() {
+  document.getElementById('artistGrid').innerHTML = ARTISTS.map(function(a,i){
+    var bg   = a.photo ? "background-image:url('"+a.photo+"')" : '';
+    var mark = a.photo ? '' : '<span class="photo-mark">'+a.name+'</span>';
+    var st = a.styles.length
+           ? a.styles.map(function(s){ return s.label; }).join(' · ')
+           : (a.role || '');
+
+    // one link per unique account
+    var seen = [], links = '';
+    a.styles.forEach(function(s){
+      if (seen.indexOf(s.handle) === -1) {
+        seen.push(s.handle);
+        links += '<a href="'+s.url+'" target="_blank" rel="noopener">'+s.handle+'</a>';
+      }
+    });
+
+    return '<div class="artist-card">'
+         +   '<button class="artist-open" onclick="openDetail('+i+')">'
+         +     '<div class="artist-photo" style="'+bg+'">'+mark+'</div>'
+         +     '<div class="artist-name">'+a.name+'</div>'
+         +     '<div class="artist-style">'+st+'</div>'
+         +   '</button>'
+         +   '<div class="artist-handles">'+links+'</div>'
+         + '</div>';
+  }).join('');
+}
+
+var filter = 'All';
+function styleList(){ var o=[]; ARTISTS.forEach(function(a){ a.styles.forEach(function(s){ if(o.indexOf(s.label)===-1) o.push(s.label); }); }); return o; }
+function workList(){ var o=[]; ARTISTS.forEach(function(a,i){ a.works.forEach(function(w){ o.push({img:w.img,style:w.style,artist:a.name,i:i}); }); }); return o; }
+
+function renderFilters() {
+  document.getElementById('filters').innerHTML = ['All'].concat(styleList()).map(function(s){
+    return '<button class="filter-btn'+(s===filter?' on':'')+'" onclick="setFilter(\''+s+'\')">'+s+'</button>';
+  }).join('');
+}
+function setFilter(s){ filter=s; renderFilters(); renderWorks(); }
+function renderWorks() {
+  var grid=document.getElementById('workGrid'), empty=document.getElementById('workEmpty');
+  var list = workList().filter(function(w){ return filter==='All' || w.style===filter; });
+  if(!list.length){ grid.innerHTML=''; empty.classList.remove('hidden'); return; }
+  empty.classList.add('hidden');
+  grid.innerHTML = list.map(function(w){
+    var bg = w.img ? "background-image:url('"+w.img+"')" : '';
+    return '<div class="work-tile" style="'+bg+'" onclick="openDetail('+w.i+')"><span>'+w.artist+' · '+w.style+'</span></div>';
+  }).join('');
+}
+
+function showArtists(){
+  document.getElementById('artistGrid').classList.remove('hidden');
+  document.getElementById('workView').classList.add('hidden');
+  document.getElementById('tabArtists').classList.add('on');
+  document.getElementById('tabWork').classList.remove('on');
+}
+function showWork(){
+  document.getElementById('artistGrid').classList.add('hidden');
+  document.getElementById('workView').classList.remove('hidden');
+  document.getElementById('tabArtists').classList.remove('on');
+  document.getElementById('tabWork').classList.add('on');
+}
+
+function openDetail(i) {
+  var a = ARTISTS[i];
+  var bg = a.photo ? "background-image:url('"+a.photo+"')" : '';
+  var rows = a.styles.map(function(s){
+    return '<div class="style-row"><span class="style-tag">'+s.label+'</span>'
+         + '<a class="style-handle" href="'+s.url+'" target="_blank" rel="noopener">'+s.handle+'</a></div>';
+  }).join('');
+  if (!a.styles.length && a.role) {
+    rows = '<div class="style-row"><span class="style-tag">'+a.role+'</span></div>';
+  }
+  var rail = a.works.map(function(w){
+    var b = w.img ? "background-image:url('"+w.img+"')" : '';
+    return '<div class="rail-tile" style="'+b+'"><span>'+w.style+'</span></div>';
+  }).join('');
+
+  document.getElementById('detailInner').innerHTML =
+      '<div class="detail-top">'
+    +   '<div class="detail-photo" style="'+bg+'"></div>'
+    +   '<div>'
+    +     '<h2 class="detail-name">'+a.name+'</h2>'
+    +     '<p class="detail-bio">'+a.bio+'</p>'
+    +     '<div class="style-rows">'+rows+'</div>'
+    +   '</div>'
+    + '</div>'
+    + (a.works.length ? '<div class="detail-label">SELECTED WORK</div><div class="rail">'+rail+'</div>' : '');
+
+  document.getElementById('detail').classList.add('open');
+  document.body.classList.add('no-scroll');
+}
+function closeDetail(){
+  document.getElementById('detail').classList.remove('open');
+  document.body.classList.remove('no-scroll');
+}
+document.addEventListener('keydown', function(e){ if(e.key==='Escape'){ closeDetail(); closeMenu(); } });
+
+/* ── HERO VIDEO ── */
+var cur=0, timer=null, slides=[], dots=[];
+function goSlide(n){
+  slides[cur].classList.remove('active'); dots[cur].classList.remove('on');
+  var v=slides[cur].querySelector('video'); if(v) v.pause();
+  cur=n;
+  slides[cur].classList.add('active'); dots[cur].classList.add('on');
+  var nv=slides[cur].querySelector('video');
+  if(nv){ nv.currentTime=0; nv.play().catch(function(){}); }
+  clearInterval(timer); timer=setInterval(next,6000);
+}
+function next(){ goSlide((cur+1)%slides.length); }
+
+/* ── apply studio details from content/studio.json ── */
+function applyStudio() {
+  if (!STUDIO || !STUDIO.email) return;
+  var set = function(sel, fn){ document.querySelectorAll(sel).forEach(fn); };
+
+  set('[data-studio="instagram"]', function(el){
+    el.textContent = STUDIO.instagram_handle;
+    if (el.tagName === 'A') el.href = STUDIO.instagram_url;
+  });
+  set('[data-studio="instagram-link"]', function(el){ el.href = STUDIO.instagram_url; });
+  set('[data-studio="email"]', function(el){
+    el.textContent = STUDIO.email; el.href = 'mailto:' + STUDIO.email;
+  });
+  set('[data-studio="address"]', function(el){
+    el.innerHTML = esc(STUDIO.address_line1) + '<br>' + esc(STUDIO.address_line2);
+  });
+  set('[data-studio="address-note"]', function(el){ el.textContent = STUDIO.address_note; });
+  set('[data-studio="hours"]', function(el){ el.textContent = STUDIO.hours; });
+  set('[data-studio="hours-note"]', function(el){
+    el.innerHTML = esc(STUDIO.hours_note).replace(/\n/g, '<br>');
+  });
+  var f = document.getElementById('mapFrame');
+  if (f && STUDIO.map_embed) f.src = STUDIO.map_embed;
+}
+
+function esc(t){
+  return String(t == null ? '' : t)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+/* ── announcements ── */
+function renderNotices() {
+  var live = (NOTICES || []).filter(function(n){ return n.published !== false; });
+  if (!live.length) return;
+  document.getElementById('notices').classList.remove('hidden');
+  document.getElementById('noticeList').innerHTML = live.map(function(n){
+    return '<div class="notice">'
+         + (n.date ? '<div class="notice-date">'+esc(n.date)+'</div>' : '')
+         + '<div class="notice-title">'+esc(n.title)+'</div>'
+         + (n.body ? '<div class="notice-body">'+esc(n.body).replace(/\n/g,'<br>')+'</div>' : '')
+         + '</div>';
+  }).join('');
+}
+
+/* ── load everything, then draw ── */
+function loadContent() {
+  var get = function(p){
+    return fetch(p, {cache:'no-store'}).then(function(r){
+      if (!r.ok) throw new Error(p + ' → ' + r.status);
+      return r.json();
+    });
+  };
+  return Promise.all([
+    get('content/artists.json'),
+    get('content/studio.json'),
+    get('content/announcements.json').catch(function(){ return {announcements: []}; })
+  ]).then(function(res){
+    ARTISTS = (res[0] && res[0].artists) || [];
+    STUDIO  = res[1] || {};
+    NOTICES = (res[2] && res[2].announcements) || [];
+    // photo paths are stored root-relative by the CMS
+    ARTISTS.forEach(function(a){
+      if (a.photo) a.photo = a.photo.replace(/^\//, '');
+      a.styles = a.styles || [];
+      a.works  = (a.works || []).map(function(w){
+        return { img: (w.img || '').replace(/^\//, ''), style: w.style || '' };
+      });
+    });
+  });
+}
+
+window.addEventListener('DOMContentLoaded', function(){
+  loadContent().then(function(){
+    applyStudio();
+    renderNotices();
+    renderArtists(); renderFilters(); renderWorks();
+  }).catch(function(err){
+    console.error('Content failed to load:', err);
+    var g = document.getElementById('artistGrid');
+    if (g) g.innerHTML = '<p class="empty">Content could not be loaded. '
+      + 'If you opened this file directly from your computer, run it through a local server instead.</p>';
+  });
+
+
+  /* Google blocks its map embed when the page is opened straight from disk
+     (file://). Show the address instead until the site is on a real domain. */
+  if (location.protocol !== 'http:' && location.protocol !== 'https:') {
+    var box = document.getElementById('mapBox');
+    if (box) {
+      box.style.filter = 'none';
+      box.innerHTML =
+        '<div class="map-fallback">'
+      +   '<div class="mf-name">Higher Ground NYC</div>'
+      +   '<div class="mf-addr">325 West 38th Street #703<br>New York, NY 10018</div>'
+      +   '<div class="mf-note">The live map appears once the site is hosted online.</div>'
+      + '</div>';
+    }
+  }
+
+  slides = Array.prototype.slice.call(document.querySelectorAll('.video-slide'));
+  document.getElementById('dots').innerHTML = slides.map(function(_,i){
+    return '<button class="video-dot'+(i===0?' on':'')+'" onclick="goSlide('+i+')" aria-label="Video '+(i+1)+'"></button>';
+  }).join('');
+  dots = Array.prototype.slice.call(document.querySelectorAll('.video-dot'));
+
+  var first = slides[0].querySelector('video');
+  if (first) first.play().catch(function(){});
+  timer = setInterval(next, 6000);
+
+  var stage = document.getElementById('stage');
+  stage.addEventListener('mouseenter', function(){ clearInterval(timer); });
+  stage.addEventListener('mouseleave', function(){ timer=setInterval(next,6000); });
+});
+</script>
+</body>
+</html>

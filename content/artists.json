@@ -1,0 +1,97 @@
+{
+  "artists": [
+    {
+      "name": "Jin",
+      "photo": "/images/artists/jin.jpg",
+      "role": "",
+      "bio": "I work in two registers. Fine line for the pieces that live quietly on skin, micro-realism for the ones that ask you to look twice. Precision isn't the goal — it's the floor.",
+      "styles": [
+        {
+          "label": "Fine Line",
+          "handle": "@i_am_fine_newyork",
+          "url": "https://instagram.com/i_am_fine_newyork"
+        },
+        {
+          "label": "Micro-realistic",
+          "handle": "@hoa_eternity",
+          "url": "https://instagram.com/hoa_eternity"
+        }
+      ],
+      "works": []
+    },
+    {
+      "name": "Jaya",
+      "photo": "/images/artists/jaya.jpg",
+      "role": "",
+      "bio": "Japanese traditional taught me patience. A sleeve isn't a drawing — it's a composition that has to move with the body for a lifetime. I design for how it will read in thirty years.",
+      "styles": [
+        {
+          "label": "Oriental Japanese",
+          "handle": "@jaya_tattoo",
+          "url": "https://instagram.com/jaya_tattoo"
+        }
+      ],
+      "works": []
+    },
+    {
+      "name": "Sini",
+      "photo": "/images/artists/sini.jpg",
+      "role": "",
+      "bio": "New school is where colour stops apologizing. Bold lines, saturated palettes, characters with attitude. If you want a piece people ask about, we'll get along.",
+      "styles": [
+        {
+          "label": "New School",
+          "handle": "@sini_tat",
+          "url": "https://instagram.com/sini_tat"
+        }
+      ],
+      "works": []
+    },
+    {
+      "name": "Hanu",
+      "photo": "/images/artists/hanu.jpg",
+      "role": "",
+      "bio": "I held a brush long before I held a machine. The pressure, the release, the single stroke that can't be redone — that discipline is what I bring to skin.",
+      "styles": [
+        {
+          "label": "Oriental",
+          "handle": "@hanu.classic",
+          "url": "https://instagram.com/hanu.classic"
+        },
+        {
+          "label": "Brush-stroke",
+          "handle": "@hanu.classic",
+          "url": "https://instagram.com/hanu.classic"
+        }
+      ],
+      "works": []
+    },
+    {
+      "name": "Jay",
+      "photo": "/images/artists/jay.jpg",
+      "role": "",
+      "bio": "Illustration first, tattoo second. Every piece starts as a drawing that would hold up on paper. Fine line is just how I move it onto skin without losing the hand.",
+      "styles": [
+        {
+          "label": "Fine Line",
+          "handle": "@wkdwowns",
+          "url": "https://instagram.com/wkdwowns"
+        },
+        {
+          "label": "Illustration",
+          "handle": "@wkdwowns",
+          "url": "https://instagram.com/wkdwowns"
+        }
+      ],
+      "works": []
+    },
+    {
+      "name": "Tan",
+      "photo": "/images/artists/tan.jpg",
+      "role": "Shop Dog",
+      "bio": "I run front of house. I greet everyone who walks in, supervise every session from the nearest warm spot, and I have never once missed a snack. Ask for me by name.",
+      "styles": [],
+      "works": []
+    }
+  ]
+}

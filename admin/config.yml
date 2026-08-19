@@ -1,0 +1,136 @@
+########################################################################
+#  HIGHER GROUND NYC — admin settings
+#
+#  Two lines below must be filled in during setup. Everything else
+#  is ready to go.
+#
+#    repo:      your GitHub username / repository name
+#    base_url:  the login worker address you create in Step 4
+########################################################################
+
+backend:
+  name: github
+  repo: YOUR-GITHUB-USERNAME/highergroundnyc      # ← change this
+  branch: main
+  base_url: https://YOUR-WORKER.workers.dev       # ← change this
+
+# uploaded photos land here
+media_folder: "images"
+public_folder: "/images"
+
+publish_mode: simple
+locale: en
+
+collections:
+  # ── ARTISTS ────────────────────────────────────────────────────────
+  - name: artists
+    label: "Artists"
+    files:
+      - name: artists
+        label: "Artist list"
+        file: "content/artists.json"
+        description: "Add, edit, reorder, or remove artists. Drag the handle to change the order they appear on the site."
+        fields:
+          - name: artists
+            label: "Artists"
+            label_singular: "Artist"
+            widget: list
+            summary: "{{fields.name}}"
+            fields:
+              - { name: name, label: "Name", widget: string }
+
+              - name: photo
+                label: "Photo"
+                widget: image
+                required: false
+                media_folder: "/images/artists"
+                public_folder: "/images/artists"
+                hint: "Portrait works best — taller than it is wide. Black and white."
+
+              - name: role
+                label: "Role (instead of styles)"
+                widget: string
+                required: false
+                hint: "Leave empty for tattoo artists. Used for non-artists, e.g. Tan's 'Shop Dog'."
+
+              - name: bio
+                label: "Bio"
+                widget: text
+                required: false
+                hint: "Written in the artist's own voice, first person."
+
+              - name: styles
+                label: "Specialties"
+                label_singular: "Specialty"
+                widget: list
+                required: false
+                summary: "{{fields.label}} — {{fields.handle}}"
+                hint: "One row per style. An artist can have two styles pointing at two different Instagram accounts."
+                fields:
+                  - { name: label,  label: "Style name", widget: string }
+                  - { name: handle, label: "Instagram handle", widget: string, hint: "Include the @ — e.g. @sini_tat" }
+                  - { name: url,    label: "Instagram link", widget: string, hint: "e.g. https://instagram.com/sini_tat" }
+
+              - name: works
+                label: "Tattoo photos"
+                label_singular: "Photo"
+                widget: list
+                required: false
+                summary: "{{fields.style}}"
+                fields:
+                  - name: img
+                    label: "Photo"
+                    widget: image
+                    media_folder: "/images/works"
+                    public_folder: "/images/works"
+                  - name: style
+                    label: "Style label"
+                    widget: string
+                    hint: "Must match one of the artist's specialty names so the filter works."
+
+  # ── STUDIO INFO ────────────────────────────────────────────────────
+  - name: studio
+    label: "Studio Info"
+    files:
+      - name: studio
+        label: "Address, hours, contact"
+        file: "content/studio.json"
+        fields:
+          - { name: instagram_handle, label: "Studio Instagram handle", widget: string }
+          - { name: instagram_url,    label: "Studio Instagram link",   widget: string }
+          - { name: email,            label: "Email",                   widget: string }
+          - { name: address_line1,    label: "Address line 1",          widget: string }
+          - { name: address_line2,    label: "Address line 2",          widget: string }
+          - { name: address_note,     label: "Address note",            widget: string, required: false }
+          - { name: hours,            label: "Hours",                   widget: string }
+          - { name: hours_note,       label: "Hours note",              widget: text,   required: false }
+          - name: map_embed
+            label: "Google Maps embed link"
+            widget: text
+            required: false
+            hint: "Google Maps → Share → Embed a map → copy only the address inside src=\"...\""
+
+  # ── ANNOUNCEMENTS ──────────────────────────────────────────────────
+  - name: announcements
+    label: "News & Events"
+    files:
+      - name: announcements
+        label: "Announcements"
+        file: "content/announcements.json"
+        description: "The News section is hidden on the site while this list is empty."
+        fields:
+          - name: announcements
+            label: "Announcements"
+            label_singular: "Announcement"
+            widget: list
+            required: false
+            summary: "{{fields.title}}"
+            fields:
+              - { name: title, label: "Title", widget: string }
+              - { name: date,  label: "Date",  widget: string, required: false, hint: "Free text — e.g. 'May 10–11, 2026'" }
+              - { name: body,  label: "Details", widget: text, required: false }
+              - name: published
+                label: "Show on site"
+                widget: boolean
+                default: true
+                hint: "Turn off to hide without deleting."
