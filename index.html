@@ -406,7 +406,19 @@
   .detail, .detail *, .menu, .menu *, .nav, .nav a, .nav-logo, .nav-burger {
     -webkit-text-fill-color: #FFFFFF;
   }
-  .book-btn, .detail-close { -webkit-text-fill-color: #000000; }
+
+  /* Buttons that invert the surface they sit on. These need to beat both
+     blocks above, so they are scoped tightly enough to outrank them. */
+  .nav a.book-btn, .nav .book-btn,
+  .menu a.menu-book,
+  .detail-close {
+    color: #000000 !important;
+    -webkit-text-fill-color: #000000;
+  }
+  #contact a.book-cta, #contact .book-cta {
+    color: #FFFFFF !important;
+    -webkit-text-fill-color: #FFFFFF;
+  }
 
   .band-dark { background-color: #000000 !important; }
   footer { background-color: #000000 !important; }
