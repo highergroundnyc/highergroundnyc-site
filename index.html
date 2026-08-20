@@ -213,7 +213,7 @@
   .artist-photo {
     aspect-ratio: 3/4; margin-bottom: 1.1rem;
     background: #262626; background-size: cover; background-position: center;
-    filter: grayscale(100%); transition: opacity 0.3s;
+    transition: opacity 0.3s;
     display: flex; align-items: flex-end; padding: 18px;
     border: 1px solid rgba(255,255,255,0.3);
   }
@@ -238,45 +238,37 @@
   }
   .filter-btn.on { border-bottom-color: var(--white); }
 
-  .work-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 1.1rem; }
-  .work-tile {
-    aspect-ratio: 1/1; background: #262626;
-    background-size: cover; background-position: center;
-    position: relative; cursor: pointer; transition: opacity 0.3s;
-    border: 1px solid rgba(255,255,255,0.3);
-  }
-  .work-tile:hover { opacity: 0.78; }
-  .work-tile span {
-    position: absolute; left: 0; right: 0; bottom: 0;
-    padding: 10px 14px; background: rgba(0,0,0,0.75);
-    font-size: 15px; color: var(--white);
-  }
   .empty { font-size: var(--t-body); color: var(--white); padding: 2rem 0; }
 
-  /* ══ ARTIST DETAIL ══ */
-  .detail {
-    position: fixed; inset: 0; z-index: 300; background: var(--black); color: var(--white);
-    overflow-y: auto; opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+  /* ══ ARTIST PANEL — inline expansion under the card row ══ */
+  .artist-card.on .artist-photo { outline: 2px solid var(--white); outline-offset: 4px; }
+
+  .artist-panel {
+    grid-column: 1 / -1;
+    border-top: 2px solid var(--white); border-bottom: 2px solid var(--white);
+    padding: 2.8rem 0 3rem; margin: 1.4rem 0 1.8rem;
   }
-  .detail.open { opacity: 1; pointer-events: auto; }
-  .detail-close {
-    position: fixed; top: 24px; right: 30px; z-index: 310;
-    font-family: var(--ff); font-size: 17px; color: var(--black);
-    background: var(--white); border: none; cursor: pointer; padding: 8px 18px;
-  }
-  .detail-inner { max-width: 1040px; margin: 0 auto; padding: 7.5rem 2.5rem 6rem; }
-  .detail-top { display: grid; grid-template-columns: 290px 1fr; gap: 3.5rem; align-items: start; margin-bottom: 4.5rem; }
-  .detail-photo {
+  .panel-head { display: grid; grid-template-columns: 220px 1fr; gap: 2.6rem; align-items: start; }
+  .panel-photo {
     aspect-ratio: 3/4; background: #262626;
-    background-size: cover; background-position: center; filter: grayscale(100%);
+    background-size: cover; background-position: center;
     border: 1px solid rgba(255,255,255,0.3);
   }
-  .detail-name { font-weight: 700; font-size: clamp(40px, 6vw, 68px); line-height: 1.05; margin-bottom: 1.6rem; color: var(--white); }
-  .detail-bio { font-size: var(--t-lead); font-weight: 500; line-height: 1.85; color: var(--white); max-width: 58ch; margin-bottom: 2.8rem; }
-  .style-rows { display: flex; flex-direction: column; max-width: 500px; }
+  .panel-bar { display: flex; align-items: baseline; justify-content: space-between; gap: 1.5rem; }
+  .panel-name { font-weight: 700; font-size: clamp(30px, 4vw, 46px); line-height: 1.08; color: var(--white); }
+  .panel-close {
+    font-family: var(--ff); font-size: 16px; color: var(--white);
+    background: none; border: none; cursor: pointer; white-space: nowrap;
+    padding: 0 0 4px; border-bottom: 1px solid var(--white);
+  }
+  .panel-bio {
+    font-size: var(--t-body); font-weight: 500; line-height: 1.8;
+    color: var(--white); max-width: 58ch; margin-top: 1.2rem;
+  }
+  .style-rows { display: flex; flex-direction: column; max-width: 500px; margin-top: 1.8rem; }
   .style-row {
     display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap;
-    padding: 18px 0; border-bottom: 1px solid rgba(255,255,255,0.4);
+    padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.4);
   }
   .style-row:first-child { border-top: 1px solid rgba(255,255,255,0.4); }
   .style-tag { font-weight: 700; font-size: 17px; color: var(--white); }
@@ -284,21 +276,34 @@
     font-size: 17px; color: var(--white); text-decoration: none;
     margin-left: auto; border-bottom: 1px solid var(--white); padding-bottom: 2px;
   }
-  .detail-label { font-size: 14px; letter-spacing: 0.34em; color: var(--white); margin-bottom: 1.6rem; }
-  .rail { display: flex; gap: 1.1rem; overflow-x: auto; padding-bottom: 16px; scroll-snap-type: x mandatory; }
-  .rail::-webkit-scrollbar { height: 3px; }
-  .rail::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.4); }
-  .rail-tile {
-    flex: 0 0 260px; aspect-ratio: 3/4; background: #262626;
-    background-size: cover; background-position: center;
-    scroll-snap-align: start; position: relative;
+
+  /* tabs — frameless, underline marks the active one */
+  .work-tabs { display: flex; gap: 26px; flex-wrap: wrap; margin: 2.8rem 0 1.8rem; }
+  .work-tab {
+    font-family: var(--ff); font-size: 17px; color: var(--white);
+    background: none; border: none; cursor: pointer;
+    padding: 0 0 6px; border-bottom: 2px solid transparent;
+    transition: border-color 0.2s; white-space: nowrap;
+  }
+  .work-tab.on { border-bottom-color: var(--white); }
+
+  .gal-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 1.4rem 1.1rem; }
+  .gal-item { display: flex; flex-direction: column; }
+  .gal-fig {
+    aspect-ratio: 1/1; background: #161616; overflow: hidden;
     border: 1px solid rgba(255,255,255,0.3);
   }
-  .rail-tile span {
-    position: absolute; left: 0; right: 0; bottom: 0;
-    padding: 10px 14px; background: rgba(0,0,0,0.75);
-    font-size: 15px; color: var(--white);
+  /* uploaded artwork renders exactly as supplied — no filter */
+  .gal-fig img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .gal-cap { font-size: 15px; color: var(--white); line-height: 1.5; padding-top: 9px; }
+  .book-this {
+    align-self: flex-start; margin-top: 9px;
+    font-family: var(--ff); font-size: 15px; line-height: 1.2;
+    color: var(--black); background: var(--white);
+    text-decoration: none; padding: 7px 15px; transition: opacity 0.2s;
   }
+  .book-this:hover { opacity: 0.82; }
+  .panel-empty { font-size: var(--t-body); color: var(--white); padding: 0.5rem 0 0; }
 
   /* ══ SHOP ══ */
   .shop-links { display: flex; flex-direction: column; margin-top: 2rem; }
@@ -395,7 +400,7 @@
   ══════════════════════════════════════════════ */
   html, body { background-color: #FFFFFF !important; }
 
-  .band, .wrap, .hero, footer, .detail, .menu, .nav { forced-color-adjust: none; }
+  .band, .wrap, .hero, footer, .artist-panel, .menu, .nav { forced-color-adjust: none; }
 
   /* light sections carry their own background */
   #about, #shop, #contact, #notices { background-color: #FFFFFF; }
@@ -414,7 +419,7 @@
   }
 
   .band-dark, .band-dark *, footer, footer *,
-  .detail, .detail *, .menu, .menu *, .nav, .nav a, .nav-logo, .nav-burger,
+  .menu, .menu *, .nav, .nav a, .nav-logo, .nav-burger,
   .foot-parent {
     -webkit-text-fill-color: #FFFFFF;
   }
@@ -423,7 +428,7 @@
      blocks above, so they are scoped tightly enough to outrank them. */
   .nav a.book-btn, .nav .book-btn,
   .menu a.menu-book,
-  .detail-close {
+  #artists a.book-this, .artist-panel a.book-this {
     color: #000000 !important;
     -webkit-text-fill-color: #000000;
   }
@@ -436,15 +441,14 @@
   footer { background-color: #000000 !important; }
   .nav { background-color: #000000 !important; }
   .menu { background-color: #000000 !important; }
-  .detail { background-color: #000000 !important; }
   .hero { background-color: #000000 !important; }
   .book-btn { background-color: #FFFFFF !important; }
-  .detail-close { background-color: #FFFFFF !important; }
+  .book-this { background-color: #FFFFFF !important; }
 
   @media (prefers-color-scheme: dark) {
     html, body { background-color: #FFFFFF !important; color: #000000 !important; }
     #about, #shop, #contact { background-color: #FFFFFF !important; }
-    .band-dark, footer, .nav, .menu, .detail, .hero { background-color: #000000 !important; }
+    .band-dark, footer, .nav, .menu, .hero { background-color: #000000 !important; }
   }
 
   /* ══ RESPONSIVE ══ */
@@ -460,13 +464,12 @@
     .block { padding-top: 2.6rem; margin-top: 2.6rem; }
     .artists-head { align-items: flex-start; gap: 1.4rem; }
     .artist-grid { grid-template-columns: repeat(2, 1fr); gap: 2rem 1.1rem; }
-    .work-grid { grid-template-columns: repeat(2, 1fr); }
 
-    .detail-inner { padding: 6rem 1.4rem 4rem; }
-    .detail-top { grid-template-columns: 1fr; gap: 2rem; }
-    .detail-photo { max-width: 230px; }
-    .detail-close { top: 16px; right: 16px; }
-    .rail-tile { flex: 0 0 200px; }
+    .panel-head { grid-template-columns: 1fr; gap: 1.6rem; }
+    .panel-photo { max-width: 190px; }
+    .artist-panel { padding: 2rem 0 2.2rem; margin: 1rem 0 1.4rem; }
+    .work-tabs { gap: 20px; margin: 2rem 0 1.4rem; }
+    .gal-grid { grid-template-columns: repeat(2, 1fr); }
 
     .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
     .foot-links { gap: 1.6rem; }
@@ -574,17 +577,11 @@
 
     <div id="workView" class="hidden">
       <div class="filters" id="filters"></div>
-      <div class="work-grid" id="workGrid"></div>
+      <div class="gal-grid" id="workGrid"></div>
       <p class="empty hidden" id="workEmpty">No work in this style yet.</p>
     </div>
   </div>
 </section>
-
-<!-- ══ ARTIST DETAIL ══ -->
-<div class="detail" id="detail" role="dialog" aria-modal="true">
-  <button class="detail-close" onclick="closeDetail()">Close</button>
-  <div class="detail-inner" id="detailInner"></div>
-</div>
 
 <!-- ══ SHOP ══ -->
 <section class="band" id="shop">
@@ -687,27 +684,51 @@ function openMenu(){ document.getElementById('menu').classList.add('open'); docu
 function closeMenu(){ document.getElementById('menu').classList.remove('open'); document.body.classList.remove('no-scroll'); }
 function goContact(){ document.getElementById('contact').scrollIntoView({behavior:'smooth'}); }
 
+/* ── work types. Tattoo photos live on Instagram; this gallery is
+      drawings, flash and goods, kept per artist.                    ── */
+var TYPES = [
+  { key: 'drawing', label: 'Drawings' },
+  { key: 'flash',   label: 'Flash'    },
+  { key: 'goods',   label: 'Goods'    }
+];
+
+function slugOf(a){ return String(a.slug || a.name || '').trim().toLowerCase().replace(/\s+/g,'-'); }
+function typeLabel(k){ for (var i=0;i<TYPES.length;i++) if (TYPES[i].key===k) return TYPES[i].label; return k; }
+function worksOf(a, type){
+  return (a.works || []).filter(function(w){ return (w.type||'') === type; });
+}
+
+/* Flash pieces carry the artist and the design id into the booking form,
+   so an enquiry arrives already saying who and which design. */
+function bookUrl(a, w){
+  var base = STUDIO && STUDIO.booking_url;
+  if (!base) return '';
+  var sep = base.indexOf('?') === -1 ? '?' : '&';
+  return base + sep + 'artist=' + encodeURIComponent(slugOf(a))
+              + '&flash_id=' + encodeURIComponent(w.flash_id || '');
+}
+
 function renderArtists() {
   document.getElementById('artistGrid').innerHTML = ARTISTS.map(function(a,i){
     var bg   = a.photo ? "background-image:url('"+a.photo+"')" : '';
-    var mark = a.photo ? '' : '<span class="photo-mark">'+a.name+'</span>';
+    var mark = a.photo ? '' : '<span class="photo-mark">'+esc(a.name)+'</span>';
     var st = a.styles.length
-           ? a.styles.map(function(s){ return s.label; }).join(' · ')
-           : (a.role || '');
+           ? a.styles.map(function(s){ return esc(s.label); }).join(' &middot; ')
+           : esc(a.role || '');
 
     // one link per unique account
     var seen = [], links = '';
     a.styles.forEach(function(s){
       if (seen.indexOf(s.handle) === -1) {
         seen.push(s.handle);
-        links += '<a href="'+s.url+'" target="_blank" rel="noopener">'+s.handle+'</a>';
+        links += '<a href="'+esc(s.url)+'" target="_blank" rel="noopener">'+esc(s.handle)+'</a>';
       }
     });
 
     return '<div class="artist-card">'
-         +   '<button class="artist-open" onclick="openDetail('+i+')">'
+         +   '<button class="artist-open" onclick="toggleArtist('+i+')" aria-expanded="false">'
          +     '<div class="artist-photo" style="'+bg+'">'+mark+'</div>'
-         +     '<div class="artist-name">'+a.name+'</div>'
+         +     '<div class="artist-name">'+esc(a.name)+'</div>'
          +     '<div class="artist-style">'+st+'</div>'
          +   '</button>'
          +   '<div class="artist-handles">'+links+'</div>'
@@ -715,24 +736,161 @@ function renderArtists() {
   }).join('');
 }
 
+/* ── inline artist panel ── */
+var openIdx = -1;
+var galTab  = '';
+
+function toggleArtist(i){
+  if (openIdx === i) { closeArtist(); return; }
+  openIdx = i;
+  var avail = TYPES.filter(function(t){ return worksOf(ARTISTS[i], t.key).length; });
+  // tab order stays fixed, but flash is the bookable one — open on it when there is any
+  var hasFlash = avail.some(function(t){ return t.key === 'flash'; });
+  galTab = hasFlash ? 'flash' : (avail.length ? avail[0].key : '');
+  drawPanel(true);
+}
+
+function closeArtist(){
+  openIdx = -1;
+  var p = document.getElementById('artistPanel');
+  if (p) p.remove();
+  document.querySelectorAll('.artist-card').forEach(function(c){ c.classList.remove('on'); });
+  document.querySelectorAll('.artist-open').forEach(function(b){ b.setAttribute('aria-expanded','false'); });
+}
+
+function setGalTab(k){ galTab = k; drawPanel(false); }
+
+/* Cards sit in a responsive grid, so the panel is inserted after the LAST
+   card sharing a row with the one that was clicked. That keeps it visually
+   attached to its row instead of splitting the row in half. */
+function drawPanel(scroll){
+  var grid = document.getElementById('artistGrid');
+  var old  = document.getElementById('artistPanel');
+  if (old) old.remove();
+
+  var cards = Array.prototype.slice.call(grid.querySelectorAll('.artist-card'));
+  cards.forEach(function(c,n){ c.classList.toggle('on', n === openIdx); });
+  grid.querySelectorAll('.artist-open').forEach(function(b,n){
+    b.setAttribute('aria-expanded', n === openIdx ? 'true' : 'false');
+  });
+  if (openIdx < 0 || !cards[openIdx]) return;
+
+  var top = cards[openIdx].offsetTop, last = openIdx;
+  for (var n = openIdx; n < cards.length; n++){
+    if (Math.abs(cards[n].offsetTop - top) < 2) last = n; else break;
+  }
+
+  var panel = document.createElement('div');
+  panel.className = 'artist-panel';
+  panel.id = 'artistPanel';
+  panel.innerHTML = panelHTML(ARTISTS[openIdx]);
+  cards[last].insertAdjacentElement('afterend', panel);
+
+  if (scroll) {
+    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+function panelHTML(a){
+  var bg = a.photo ? "background-image:url('"+a.photo+"')" : '';
+
+  var rows = a.styles.map(function(s){
+    return '<div class="style-row"><span class="style-tag">'+esc(s.label)+'</span>'
+         + '<a class="style-handle" href="'+esc(s.url)+'" target="_blank" rel="noopener">'+esc(s.handle)+'</a></div>';
+  }).join('');
+  if (!a.styles.length && a.role) {
+    rows = '<div class="style-row"><span class="style-tag">'+esc(a.role)+'</span></div>';
+  }
+
+  var avail = TYPES.filter(function(t){ return worksOf(a, t.key).length; });
+  var body  = '';
+
+  if (avail.length) {
+    body += '<div class="work-tabs">' + avail.map(function(t){
+      return '<button class="work-tab'+(t.key===galTab?' on':'')
+           + '" onclick="setGalTab(\''+t.key+'\')">'+t.label+'</button>';
+    }).join('') + '</div>';
+
+    body += '<div class="gal-grid">' + worksOf(a, galTab).map(function(w){
+      var cap = w.title ? esc(w.title) : typeLabel(w.type);
+      var cta = '';
+      if (w.type === 'flash') {
+        var u = bookUrl(a, w);
+        if (u) cta = '<a class="book-this" href="'+esc(u)+'" target="_blank" rel="noopener">Book this</a>';
+      }
+      return '<div class="gal-item">'
+           +   '<div class="gal-fig">'
+           +     (w.img ? '<img src="'+esc(w.img)+'" alt="'+esc(a.name+' — '+cap)+'" loading="lazy">' : '')
+           +   '</div>'
+           +   '<div class="gal-cap">'+cap+'</div>'
+           +   cta
+           + '</div>';
+    }).join('') + '</div>';
+  } else {
+    body += '<p class="panel-empty">Drawings, flash and goods are posted here as they are made. '
+         +  'Finished tattoos are on Instagram.</p>';
+  }
+
+  return '<div class="panel-head">'
+       +   '<div class="panel-photo" style="'+bg+'"></div>'
+       +   '<div>'
+       +     '<div class="panel-bar">'
+       +       '<h3 class="panel-name">'+esc(a.name)+'</h3>'
+       +       '<button class="panel-close" onclick="closeArtist()">Close</button>'
+       +     '</div>'
+       +     '<p class="panel-bio">'+esc(a.bio)+'</p>'
+       +     '<div class="style-rows">'+rows+'</div>'
+       +   '</div>'
+       + '</div>'
+       + body;
+}
+
+/* ── "All Work" — every artist's drawings / flash / goods, filtered by type ── */
 var filter = 'All';
-function styleList(){ var o=[]; ARTISTS.forEach(function(a){ a.styles.forEach(function(s){ if(o.indexOf(s.label)===-1) o.push(s.label); }); }); return o; }
-function workList(){ var o=[]; ARTISTS.forEach(function(a,i){ a.works.forEach(function(w){ o.push({img:w.img,style:w.style,artist:a.name,i:i}); }); }); return o; }
+
+function workList(){
+  var o = [];
+  ARTISTS.forEach(function(a){
+    (a.works || []).forEach(function(w){ o.push({ w: w, a: a }); });
+  });
+  return o;
+}
 
 function renderFilters() {
-  document.getElementById('filters').innerHTML = ['All'].concat(styleList()).map(function(s){
-    return '<button class="filter-btn'+(s===filter?' on':'')+'" onclick="setFilter(\''+s+'\')">'+s+'</button>';
-  }).join('');
+  var present = TYPES.filter(function(t){
+    return workList().some(function(r){ return r.w.type === t.key; });
+  });
+  document.getElementById('filters').innerHTML =
+    [{key:'All', label:'All'}].concat(present).map(function(t){
+      return '<button class="filter-btn'+(t.key===filter?' on':'')
+           + '" onclick="setFilter(\''+t.key+'\')">'+t.label+'</button>';
+    }).join('');
 }
-function setFilter(s){ filter=s; renderFilters(); renderWorks(); }
+function setFilter(k){ filter = k; renderFilters(); renderWorks(); }
+
 function renderWorks() {
-  var grid=document.getElementById('workGrid'), empty=document.getElementById('workEmpty');
-  var list = workList().filter(function(w){ return filter==='All' || w.style===filter; });
-  if(!list.length){ grid.innerHTML=''; empty.classList.remove('hidden'); return; }
+  var grid  = document.getElementById('workGrid');
+  var empty = document.getElementById('workEmpty');
+  var list  = workList().filter(function(r){ return filter==='All' || r.w.type===filter; });
+
+  if (!list.length){ grid.innerHTML=''; empty.classList.remove('hidden'); return; }
   empty.classList.add('hidden');
-  grid.innerHTML = list.map(function(w){
-    var bg = w.img ? "background-image:url('"+w.img+"')" : '';
-    return '<div class="work-tile" style="'+bg+'" onclick="openDetail('+w.i+')"><span>'+w.artist+' · '+w.style+'</span></div>';
+
+  grid.innerHTML = list.map(function(r){
+    var w = r.w, a = r.a;
+    var cap = esc(a.name) + ' &middot; ' + (w.title ? esc(w.title) : typeLabel(w.type));
+    var cta = '';
+    if (w.type === 'flash') {
+      var u = bookUrl(a, w);
+      if (u) cta = '<a class="book-this" href="'+esc(u)+'" target="_blank" rel="noopener">Book this</a>';
+    }
+    return '<div class="gal-item">'
+         +   '<div class="gal-fig">'
+         +     (w.img ? '<img src="'+esc(w.img)+'" alt="'+esc(a.name)+'" loading="lazy">' : '')
+         +   '</div>'
+         +   '<div class="gal-cap">'+cap+'</div>'
+         +   cta
+         + '</div>';
   }).join('');
 }
 
@@ -743,46 +901,22 @@ function showArtists(){
   document.getElementById('tabWork').classList.remove('on');
 }
 function showWork(){
+  closeArtist();
   document.getElementById('artistGrid').classList.add('hidden');
   document.getElementById('workView').classList.remove('hidden');
   document.getElementById('tabArtists').classList.remove('on');
   document.getElementById('tabWork').classList.add('on');
 }
 
-function openDetail(i) {
-  var a = ARTISTS[i];
-  var bg = a.photo ? "background-image:url('"+a.photo+"')" : '';
-  var rows = a.styles.map(function(s){
-    return '<div class="style-row"><span class="style-tag">'+s.label+'</span>'
-         + '<a class="style-handle" href="'+s.url+'" target="_blank" rel="noopener">'+s.handle+'</a></div>';
-  }).join('');
-  if (!a.styles.length && a.role) {
-    rows = '<div class="style-row"><span class="style-tag">'+a.role+'</span></div>';
-  }
-  var rail = a.works.map(function(w){
-    var b = w.img ? "background-image:url('"+w.img+"')" : '';
-    return '<div class="rail-tile" style="'+b+'"><span>'+w.style+'</span></div>';
-  }).join('');
+/* the grid reflows on resize, so the panel has to find its row again */
+var rzTimer = null;
+window.addEventListener('resize', function(){
+  if (openIdx < 0) return;
+  clearTimeout(rzTimer);
+  rzTimer = setTimeout(function(){ drawPanel(false); }, 150);
+});
 
-  document.getElementById('detailInner').innerHTML =
-      '<div class="detail-top">'
-    +   '<div class="detail-photo" style="'+bg+'"></div>'
-    +   '<div>'
-    +     '<h2 class="detail-name">'+a.name+'</h2>'
-    +     '<p class="detail-bio">'+a.bio+'</p>'
-    +     '<div class="style-rows">'+rows+'</div>'
-    +   '</div>'
-    + '</div>'
-    + (a.works.length ? '<div class="detail-label">SELECTED WORK</div><div class="rail">'+rail+'</div>' : '');
-
-  document.getElementById('detail').classList.add('open');
-  document.body.classList.add('no-scroll');
-}
-function closeDetail(){
-  document.getElementById('detail').classList.remove('open');
-  document.body.classList.remove('no-scroll');
-}
-document.addEventListener('keydown', function(e){ if(e.key==='Escape'){ closeDetail(); closeMenu(); } });
+document.addEventListener('keydown', function(e){ if(e.key==='Escape'){ closeArtist(); closeMenu(); } });
 
 /* ── HERO VIDEO ── */
 var cur=0, timer=null, slides=[], dots=[];
@@ -867,7 +1001,12 @@ function loadContent() {
       if (a.photo) a.photo = a.photo.replace(/^\//, '');
       a.styles = a.styles || [];
       a.works  = (a.works || []).map(function(w){
-        return { img: (w.img || '').replace(/^\//, ''), style: w.style || '' };
+        return {
+          img:      (w.img || '').replace(/^\//, ''),
+          type:     w.type || 'drawing',
+          title:    w.title || '',
+          flash_id: w.flash_id || ''
+        };
       });
     });
   });
