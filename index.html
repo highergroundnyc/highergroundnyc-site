@@ -310,10 +310,11 @@
   .shop-link {
     display: flex; align-items: baseline; justify-content: space-between; gap: 1.5rem;
     padding: 1.8rem 0; border-bottom: 1px solid var(--black);
-    text-decoration: none; color: var(--black); transition: padding-left 0.25s ease;
+    text-decoration: none; color: var(--black);
   }
   .shop-link:first-child { border-top: 1px solid var(--black); }
-  .shop-link:hover { padding-left: 14px; }
+  .shop-status { font-size: 17px; color: var(--black); margin-top: 0.9rem; }
+  .shop-status a { color: var(--black); text-decoration: none; border-bottom: 1px solid var(--black); }
   .shop-name { font-weight: 700; font-size: var(--t-h3); }
   .shop-note { font-size: 16px; color: var(--black); }
 
@@ -409,6 +410,7 @@
   #about .closer,
     #shop, #shop .h2, #shop .copy, #shop .kicker,
   #shop .shop-name, #shop .shop-note, #shop .shop-link,
+  #shop .shop-status, #shop .shop-status a,
   #contact, #contact .h2, #contact .copy, #contact .kicker,
   #contact .dm, #contact .dm-note, #contact .info-key, #contact .book-cta-note, #contact .or-rule span,
   #contact .info-val, #contact .info-val a, #contact .info-sub,
@@ -589,11 +591,13 @@
     <div class="kicker">SHOP</div>
     <h2 class="h2">Carry the art with you.</h2>
     <p class="copy">Prints, apparel, and artist collaborations — made in limited runs.</p>
+    <p class="shop-status">Everything here is still being made. Drops are announced on
+      <a data-studio="instagram-link" href="https://instagram.com/higher_ground_nyc" target="_blank" rel="noopener">Instagram</a>.</p>
     <div class="shop-links">
-      <a class="shop-link" href="#"><span class="shop-name">Art Prints</span><span class="shop-note">Limited run</span></a>
-      <a class="shop-link" href="#"><span class="shop-name">Apparel</span><span class="shop-note">Seasonal</span></a>
-      <a class="shop-link" href="#"><span class="shop-name">Flash Sheets</span><span class="shop-note">By artist</span></a>
-      <a class="shop-link" href="#"><span class="shop-name">Collab Drops</span><span class="shop-note">Announced on Instagram</span></a>
+      <div class="shop-link"><span class="shop-name">Art Prints</span><span class="shop-note">Limited run</span></div>
+      <div class="shop-link"><span class="shop-name">Apparel</span><span class="shop-note">Seasonal</span></div>
+      <div class="shop-link"><span class="shop-name">Flash Sheets</span><span class="shop-note">By artist</span></div>
+      <div class="shop-link"><span class="shop-name">Collab Drops</span><span class="shop-note">Announced on Instagram</span></div>
     </div>
   </div>
 </section>
